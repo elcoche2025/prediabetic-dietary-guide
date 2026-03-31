@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Prediabetic Dietary Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FDFAF5;
+    --bg-warm: #F7F1E8;
+    --text-primary: #2C2417;
+    --text-secondary: #6B5D4D;
+    --text-muted: #9C8E7C;
+    --accent-green: #4A7C59;
+    --accent-green-light: #E8F0EA;
+    --accent-green-mid: #B8D4BF;
+    --accent-amber: #C4883A;
+    --accent-amber-light: #FFF3E0;
+    --accent-red: #B54A3F;
+    --accent-red-light: #FDECEA;
+    --accent-blue: #4A6E8C;
+    --accent-blue-light: #E8F0F6;
+    --border: #E5DDD0;
+    --shadow-sm: 0 1px 3px rgba(44,36,23,0.06);
+    --shadow-md: 0 4px 16px rgba(44,36,23,0.08);
+    --shadow-lg: 0 8px 32px rgba(44,36,23,0.10);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.65;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 64px 0 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -80px;
+    width: 360px; height: 360px;
+    background: radial-gradient(circle, var(--accent-green-light) 0%, transparent 70%);
+    opacity: 0.6;
+    z-index: 0;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -60px;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, var(--accent-amber-light) 0%, transparent 70%);
+    opacity: 0.5;
+    z-index: 0;
+  }
+  .hero > * { position: relative; z-index: 1; }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent-green-light);
+    color: var(--accent-green);
+    padding: 8px 18px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    animation: fadeInDown 0.6s ease-out;
+  }
+  .hero-badge svg { width: 16px; height: 16px; }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 5.5vw, 56px);
+    line-height: 1.1;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    animation: fadeInDown 0.6s ease-out 0.1s both;
+  }
+  .hero h1 em {
+    color: var(--accent-green);
+    font-style: italic;
+  }
+  .hero p {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin: 0 auto;
+    animation: fadeInDown 0.6s ease-out 0.2s both;
+  }
+
+  /* DISCLAIMER */
+  .disclaimer {
+    background: var(--accent-blue-light);
+    border: 1px solid #C8D8E4;
+    border-radius: var(--radius-sm);
+    padding: 16px 20px;
+    margin: 0 auto 48px;
+    max-width: 680px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    animation: fadeInDown 0.6s ease-out 0.3s both;
+  }
+  .disclaimer svg { flex-shrink: 0; width: 20px; height: 20px; color: var(--accent-blue); margin-top: 1px; }
+  .disclaimer p { font-size: 13.5px; color: var(--accent-blue); line-height: 1.55; }
+
+  /* TABS */
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--bg-warm);
+    border-radius: 14px;
+    padding: 5px;
+    margin-bottom: 40px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    animation: fadeIn 0.5s ease-out 0.35s both;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex: 1;
+    min-width: max-content;
+    padding: 12px 18px;
+    border: none;
+    background: transparent;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--text-secondary); background: rgba(255,255,255,0.5); }
+  .tab-btn.active {
+    background: #fff;
+    color: var(--accent-green);
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* SECTIONS */
+  .tab-panel { display: none; animation: fadeIn 0.4s ease; }
+  .tab-panel.active { display: block; }
+
+  .section-header {
+    margin-bottom: 32px;
+  }
+  .section-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 30px;
+    margin-bottom: 8px;
+  }
+  .section-header p {
+    color: var(--text-secondary);
+    font-size: 15.5px;
+  }
+
+  /* CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .card-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    font-size: 22px;
+  }
+  .card-icon.green { background: var(--accent-green-light); }
+  .card-icon.amber { background: var(--accent-amber-light); }
+  .card-icon.red { background: var(--accent-red-light); }
+  .card-icon.blue { background: var(--accent-blue-light); }
+
+  .card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .card p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* FOOD LIST */
+  .food-category {
+    margin-bottom: 28px;
+  }
+  .food-category-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .food-category-title .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+  .dot.green-dot { background: var(--accent-green); }
+  .dot.amber-dot { background: var(--accent-amber); }
+  .dot.red-dot { background: var(--accent-red); }
+
+  .food-tag-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .food-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 100px;
+    font-size: 13.5px;
+    font-weight: 450;
+    border: 1px solid;
+  }
+  .food-tag.green { background: var(--accent-green-light); border-color: var(--accent-green-mid); color: #3A6347; }
+  .food-tag.amber { background: var(--accent-amber-light); border-color: #F0D8B0; color: #8B5E1A; }
+  .food-tag.red { background: var(--accent-red-light); border-color: #F0C4BF; color: #8B3028; }
+
+  /* PLATE */
+  .plate-container {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+  .plate-visual {
+    position: relative;
+    width: 260px; height: 260px;
+    flex-shrink: 0;
+    margin: 0 auto;
+  }
+  .plate-circle {
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    border: 3px solid var(--border);
+    overflow: hidden;
+    position: relative;
+    background: #fff;
+  }
+  .plate-half {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    padding: 8px;
+    line-height: 1.3;
+  }
+  .plate-veggies {
+    top: 0; left: 0;
+    width: 50%; height: 100%;
+    background: var(--accent-green-light);
+    color: var(--accent-green);
+    border-right: 2px solid var(--border);
+  }
+  .plate-protein {
+    top: 0; right: 0;
+    width: 50%; height: 50%;
+    background: var(--accent-blue-light);
+    color: var(--accent-blue);
+    border-bottom: 2px solid var(--border);
+  }
+  .plate-carbs {
+    bottom: 0; right: 0;
+    width: 50%; height: 50%;
+    background: var(--accent-amber-light);
+    color: var(--accent-amber);
+  }
+  .plate-labels { flex: 1; min-width: 220px; }
+  .plate-label-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .plate-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+  .plate-label-item h4 { font-size: 15px; font-weight: 600; }
+  .plate-label-item p { font-size: 13.5px; color: var(--text-secondary); }
+
+  /* GI SCALE */
+  .gi-scale {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 32px;
+  }
+  .gi-scale h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+  .gi-bar-container {
+    display: flex;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 44px;
+    margin-bottom: 12px;
+  }
+  .gi-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #fff;
+  }
+  .gi-low { background: var(--accent-green); flex: 55; }
+  .gi-med { background: var(--accent-amber); flex: 14; }
+  .gi-high { background: var(--accent-red); flex: 31; }
+  .gi-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* MEAL PLAN */
+  .meal-timeline {
+    position: relative;
+    padding-left: 28px;
+  }
+  .meal-timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px; top: 8px; bottom: 8px;
+    width: 2px;
+    background: var(--border);
+  }
+  .meal-item {
+    position: relative;
+    margin-bottom: 28px;
+    padding: 20px 24px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+  .meal-item::before {
+    content: '';
+    position: absolute;
+    left: -25px; top: 26px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--accent-green);
+    border: 3px solid var(--bg);
+  }
+  .meal-time {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent-green);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+  .meal-name {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+  .meal-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    line-height: 1.6;
+  }
+  .meal-macros {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .macro-badge {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 100px;
+    background: var(--bg-warm);
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  /* TIPS */
+  .tip-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 14px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .tip-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--accent-green-light);
+    color: var(--accent-green);
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .tip-content h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .tip-content p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* FOOTER */
+  .guide-footer {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-top: 1px solid var(--border);
+    margin-top: 48px;
+  }
+  .guide-footer p {
+    font-size: 13px;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fadeInDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 600px) {
+    .container { padding: 0 16px; }
+    .hero { padding: 40px 0 32px; }
+    .tab-btn { padding: 10px 14px; font-size: 13px; }
+    .plate-container { flex-direction: column; }
+    .card-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+      Evidence-Based Nutrition
+    </div>
+    <h1>Your Prediabetes<br><em>Dietary Guide</em></h1>
+    <p>Practical, science-backed nutrition strategies to help manage blood sugar and reduce your risk of developing type 2 diabetes.</p>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+    <p>This guide is for general educational purposes only. It is not medical advice. Always consult your doctor, endocrinologist, or registered dietitian before making dietary changes — especially if you take medication for blood sugar management.</p>
+  </div>
+
+  <!-- TABS -->
+  <div class="tab-nav" role="tablist">
+    <button class="tab-btn active" data-tab="principles" role="tab">Core Principles</button>
+    <button class="tab-btn" data-tab="foods" role="tab">Food Guide</button>
+    <button class="tab-btn" data-tab="plate" role="tab">The Plate Method</button>
+    <button class="tab-btn" data-tab="meals" role="tab">Sample Meals</button>
+    <button class="tab-btn" data-tab="tips" role="tab">Lifestyle Tips</button>
+  </div>
+
+  <!-- TAB: PRINCIPLES -->
+  <div class="tab-panel active" id="tab-principles">
+    <div class="section-header">
+      <h2>Core Dietary Principles</h2>
+      <p>These six foundational strategies help keep blood sugar stable and support metabolic health.</p>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon green">🥬</div>
+        <h3>Prioritize Fiber</h3>
+        <p>Aim for 25–35g of fiber daily. Fiber slows glucose absorption, improves insulin sensitivity, and keeps you full longer. Vegetables, legumes, and whole grains are excellent sources.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon blue">🐟</div>
+        <h3>Choose Lean Proteins</h3>
+        <p>Include protein at every meal — it stabilizes blood sugar and reduces post-meal spikes. Fish, chicken, eggs, beans, and tofu are great options.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon amber">🫒</div>
+        <h3>Embrace Healthy Fats</h3>
+        <p>Unsaturated fats from olive oil, avocados, nuts, and fatty fish support heart health and slow digestion, helping to moderate blood sugar responses.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon red">🚫</div>
+        <h3>Limit Refined Carbs</h3>
+        <p>White bread, pastries, sugary drinks, and processed snacks cause rapid blood sugar spikes. Replace them with whole, unprocessed alternatives whenever possible.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon green">⏰</div>
+        <h3>Eat Consistently</h3>
+        <p>Regular meal timing prevents extreme blood sugar swings. Avoid skipping meals, and consider balanced snacks between meals if needed to maintain stable levels.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon blue">💧</div>
+        <h3>Stay Hydrated</h3>
+        <p>Water is your best beverage. Dehydration can concentrate blood sugar. Aim for 8+ cups daily. Unsweetened tea and coffee in moderation are also fine.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: FOODS -->
+  <div class="tab-panel" id="tab-foods">
+    <div class="section-header">
+      <h2>Food Guide</h2>
+      <p>A quick-reference breakdown of foods to enjoy freely, eat in moderation, and limit.</p>
+    </div>
+
+    <!-- GI Scale -->
+    <div class="gi-scale">
+      <h3>Understanding the Glycemic Index</h3>
+      <p style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;">The glycemic index (GI) rates foods by how quickly they raise blood sugar. Choosing low-GI foods more often helps maintain steadier glucose levels throughout the day.</p>
+      <div class="gi-bar-container">
+        <div class="gi-bar gi-low">Low (≤55)</div>
+        <div class="gi-bar gi-med">Med</div>
+        <div class="gi-bar gi-high">High (≥70)</div>
+      </div>
+      <div class="gi-labels">
+        <span>Slower glucose rise — prefer these</span>
+        <span>Rapid spikes — limit</span>
+      </div>
+    </div>
+
+    <!-- Enjoy Freely -->
+    <div class="food-category">
+      <div class="food-category-title"><span class="dot green-dot"></span> Enjoy Freely</div>
+      <div class="food-tag-grid">
+        <span class="food-tag green">🥦 Broccoli</span>
+        <span class="food-tag green">🥬 Spinach</span>
+        <span class="food-tag green">🫑 Bell peppers</span>
+        <span class="food-tag green">🥒 Cucumbers</span>
+        <span class="food-tag green">🍅 Tomatoes</span>
+        <span class="food-tag green">🥑 Avocado</span>
+        <span class="food-tag green">🫘 Lentils</span>
+        <span class="food-tag green">🥚 Eggs</span>
+        <span class="food-tag green">🐟 Salmon</span>
+        <span class="food-tag green">🍗 Chicken breast</span>
+        <span class="food-tag green">🫒 Olive oil</span>
+        <span class="food-tag green">🥜 Almonds</span>
+        <span class="food-tag green">🧅 Onions</span>
+        <span class="food-tag green">🍄 Mushrooms</span>
+        <span class="food-tag green">🫐 Blueberries</span>
+        <span class="food-tag green">🥗 Leafy greens</span>
+        <span class="food-tag green">🐓 Turkey</span>
+        <span class="food-tag green">🧀 Cottage cheese</span>
+      </div>
+    </div>
+
+    <!-- In Moderation -->
+    <div class="food-category">
+      <div class="food-category-title"><span class="dot amber-dot"></span> Enjoy in Moderation</div>
+      <div class="food-tag-grid">
+        <span class="food-tag amber">🍠 Sweet potato</span>
+        <span class="food-tag amber">🍚 Brown rice</span>
+        <span class="food-tag amber">🍌 Bananas</span>
+        <span class="food-tag amber">🍇 Grapes</span>
+        <span class="food-tag amber">🌽 Corn</span>
+        <span class="food-tag amber">🍞 Whole wheat bread</span>
+        <span class="food-tag amber">🥣 Oats</span>
+        <span class="food-tag amber">🥔 Potatoes</span>
+        <span class="food-tag amber">🍝 Whole grain pasta</span>
+        <span class="food-tag amber">🧃 100% fruit juice</span>
+        <span class="food-tag amber">🍯 Honey</span>
+        <span class="food-tag amber">🫓 Tortillas (whole grain)</span>
+      </div>
+    </div>
+
+    <!-- Limit / Avoid -->
+    <div class="food-category">
+      <div class="food-category-title"><span class="dot red-dot"></span> Limit or Avoid</div>
+      <div class="food-tag-grid">
+        <span class="food-tag red">🍩 Donuts / pastries</span>
+        <span class="food-tag red">🥤 Sugary drinks</span>
+        <span class="food-tag red">🍬 Candy</span>
+        <span class="food-tag red">🍟 French fries</span>
+        <span class="food-tag red">🍰 Cakes / cookies</span>
+        <span class="food-tag red">🥐 White bread</span>
+        <span class="food-tag red">🧁 Processed snacks</span>
+        <span class="food-tag red">🍕 Frozen pizza</span>
+        <span class="food-tag red">🥫 Sweetened cereals</span>
+        <span class="food-tag red">🧈 Trans fats</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: PLATE -->
+  <div class="tab-panel" id="tab-plate">
+    <div class="section-header">
+      <h2>The Plate Method</h2>
+      <p>A simple visual approach to building balanced, blood-sugar-friendly meals — no calorie counting required.</p>
+    </div>
+
+    <div class="plate-container">
+      <div class="plate-visual">
+        <div class="plate-circle">
+          <div class="plate-half plate-veggies">½<br>Non-Starchy<br>Vegetables</div>
+          <div class="plate-half plate-protein">¼<br>Lean<br>Protein</div>
+          <div class="plate-half plate-carbs">¼<br>Complex<br>Carbs</div>
+        </div>
+      </div>
+      <div class="plate-labels">
+        <div class="plate-label-item">
+          <div class="plate-dot" style="background:var(--accent-green)"></div>
+          <div>
+            <h4>½ Non-Starchy Vegetables</h4>
+            <p>Broccoli, spinach, peppers, salad greens, zucchini, asparagus, green beans. High in fiber and nutrients, very low impact on blood sugar.</p>
+          </div>
+        </div>
+        <div class="plate-label-item">
+          <div class="plate-dot" style="background:var(--accent-blue)"></div>
+          <div>
+            <h4>¼ Lean Protein</h4>
+            <p>Grilled chicken, fish, tofu, eggs, beans, or lean meat. Protein keeps you satisfied and slows glucose absorption.</p>
+          </div>
+        </div>
+        <div class="plate-label-item">
+          <div class="plate-dot" style="background:var(--accent-amber)"></div>
+          <div>
+            <h4>¼ Complex Carbohydrates</h4>
+            <p>Brown rice, quinoa, sweet potato, whole grain bread. These provide sustained energy without sharp blood sugar spikes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:32px;">
+      <h3 style="margin-bottom:8px;">🥤 Don't Forget Your Beverage</h3>
+      <p>Pair your plate with water, unsweetened tea, or sparkling water with lemon. Sugary drinks — including fruit juices — can undermine an otherwise balanced meal.</p>
+    </div>
+  </div>
+
+  <!-- TAB: MEALS -->
+  <div class="tab-panel" id="tab-meals">
+    <div class="section-header">
+      <h2>Sample Day of Meals</h2>
+      <p>A realistic example day showing how the principles come together in practice.</p>
+    </div>
+
+    <div class="meal-timeline">
+      <div class="meal-item">
+        <div class="meal-time">Breakfast — 7:30 AM</div>
+        <div class="meal-name">Veggie Scramble with Avocado</div>
+        <div class="meal-desc">Two eggs scrambled with spinach, mushrooms, and bell peppers. Served with ¼ avocado and a small slice of whole grain toast.</div>
+        <div class="meal-macros">
+          <span class="macro-badge">~22g protein</span>
+          <span class="macro-badge">~18g carbs</span>
+          <span class="macro-badge">~20g fat</span>
+          <span class="macro-badge">~6g fiber</span>
+        </div>
+      </div>
+
+      <div class="meal-item">
+        <div class="meal-time">Mid-Morning Snack — 10:00 AM</div>
+        <div class="meal-name">Apple Slices with Almond Butter</div>
+        <div class="meal-desc">Half a medium apple with 1 tablespoon of natural almond butter. The fiber and fat combination helps prevent a glucose spike.</div>
+        <div class="meal-macros">
+          <span class="macro-badge">~4g protein</span>
+          <span class="macro-badge">~15g carbs</span>
+          <span class="macro-badge">~9g fat</span>
+        </div>
+      </div>
+
+      <div class="meal-item">
+        <div class="meal-time">Lunch — 12:30 PM</div>
+        <div class="meal-name">Grilled Chicken Salad Bowl</div>
+        <div class="meal-desc">Grilled chicken over a bed of mixed greens, cherry tomatoes, cucumbers, chickpeas, and a drizzle of olive oil and lemon dressing. Served with ½ cup of quinoa.</div>
+        <div class="meal-macros">
+          <span class="macro-badge">~35g protein</span>
+          <span class="macro-badge">~32g carbs</span>
+          <span class="macro-badge">~16g fat</span>
+          <span class="macro-badge">~9g fiber</span>
+        </div>
+      </div>
+
+      <div class="meal-item">
+        <div class="meal-time">Afternoon Snack — 3:00 PM</div>
+        <div class="meal-name">Handful of Walnuts + Blueberries</div>
+        <div class="meal-desc">A small handful of walnuts (~14 halves) paired with ½ cup of fresh blueberries. Heart-healthy omega-3s and antioxidants.</div>
+        <div class="meal-macros">
+          <span class="macro-badge">~5g protein</span>
+          <span class="macro-badge">~14g carbs</span>
+          <span class="macro-badge">~13g fat</span>
+        </div>
+      </div>
+
+      <div class="meal-item">
+        <div class="meal-time">Dinner — 6:30 PM</div>
+        <div class="meal-name">Baked Salmon with Roasted Vegetables</div>
+        <div class="meal-desc">A filet of salmon baked with herbs, alongside roasted broccoli and asparagus, with a small side of brown rice (½ cup cooked).</div>
+        <div class="meal-macros">
+          <span class="macro-badge">~34g protein</span>
+          <span class="macro-badge">~28g carbs</span>
+          <span class="macro-badge">~18g fat</span>
+          <span class="macro-badge">~7g fiber</span>
+        </div>
+      </div>
+
+      <div class="meal-item" style="margin-bottom:0;">
+        <div class="meal-time">Evening — 8:00 PM (Optional)</div>
+        <div class="meal-name">Herbal Tea + Small Cottage Cheese</div>
+        <div class="meal-desc">A cup of chamomile or peppermint tea with ½ cup of low-fat cottage cheese. A light, protein-rich option if you need something before bed.</div>
+        <div class="meal-macros">
+          <span class="macro-badge">~14g protein</span>
+          <span class="macro-badge">~5g carbs</span>
+          <span class="macro-badge">~2g fat</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: TIPS -->
+  <div class="tab-panel" id="tab-tips">
+    <div class="section-header">
+      <h2>Lifestyle Tips</h2>
+      <p>Diet is the foundation — these habits amplify its effectiveness.</p>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-num">1</div>
+      <div class="tip-content">
+        <h4>Walk After Meals</h4>
+        <p>Even a 10–15 minute walk after eating can significantly reduce post-meal blood sugar spikes. It's one of the simplest, most effective habits you can build.</p>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-num">2</div>
+      <div class="tip-content">
+        <h4>Eat Vegetables First</h4>
+        <p>Starting your meal with non-starchy vegetables or protein before carbohydrates has been shown to reduce glucose and insulin spikes compared to eating carbs first.</p>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-num">3</div>
+      <div class="tip-content">
+        <h4>Prioritize Sleep</h4>
+        <p>Poor sleep increases insulin resistance and hunger hormones. Aim for 7–9 hours of quality sleep. Consistent bedtimes and limiting screen time before bed help.</p>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-num">4</div>
+      <div class="tip-content">
+        <h4>Read Nutrition Labels</h4>
+        <p>Check for added sugars (listed under many names like dextrose, maltose, and high-fructose corn syrup), total carbohydrates, and fiber content. High fiber relative to carbs is a good sign.</p>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-num">5</div>
+      <div class="tip-content">
+        <h4>Manage Stress</h4>
+        <p>Chronic stress raises cortisol, which increases blood sugar. Regular stress reduction — whether through exercise, meditation, hobbies, or socializing — supports better glucose control.</p>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-num">6</div>
+      <div class="tip-content">
+        <h4>Pair Carbs with Protein or Fat</h4>
+        <p>Never eat carbs alone. Adding protein, fat, or fiber to carbohydrate-rich foods slows digestion and flattens the blood sugar curve. For example: apple + almond butter, toast + egg.</p>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-num">7</div>
+      <div class="tip-content">
+        <h4>Add Vinegar to Meals</h4>
+        <p>A tablespoon of apple cider vinegar in water before meals has been shown in studies to modestly improve insulin sensitivity and lower post-meal glucose.</p>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-num">8</div>
+      <div class="tip-content">
+        <h4>Build Muscle</h4>
+        <p>Resistance training (bodyweight exercises, weights, resistance bands) increases the amount of glucose your muscles absorb. Even 2–3 sessions per week makes a measurable difference.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="guide-footer">
+    <p>Prediabetes is reversible for many people through sustained dietary and lifestyle changes. Small, consistent steps matter more than perfection. Work with your healthcare team to find an approach that fits your life.</p>
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
